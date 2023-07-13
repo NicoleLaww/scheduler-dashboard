@@ -34,6 +34,20 @@ state = {
   focused: null
 };
 
+  componentDidMount() {
+    const focused = JSON.parse(localStorage.getItem("focused"));
+
+    if (focused) {
+      this.setState({ focused });
+    }
+  }
+
+  componentDidUpdate(previousState) {
+    if (previousState.focused !== this.state.focused) {
+      localStorage.setItem("focused", JSON.stringify(this.state.focused));
+    }
+  }
+
 selectPanel(id) {
   this.setState(previousState => ({
     focused: previousState.focused !== null ? null : id
@@ -55,7 +69,7 @@ selectPanel(id) {
         key={panel.id} 
         label={panel.label} 
         value={panel.value}
-        onSelect={event => this.selectPanel(panel.id)}
+        onSelect={(e) => this.selectPanel(panel.id)}
       />
     )
   )
